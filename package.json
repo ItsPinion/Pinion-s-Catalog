@@ -1,0 +1,8 @@
+{
+    "name": "pinion-catalog",
+    "private": true,
+    "workspaces": [
+        "frontend",
+        "backend"
+    ]
+}
