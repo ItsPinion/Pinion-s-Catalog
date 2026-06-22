@@ -3,7 +3,7 @@ import { hc } from "hono/client";
 import type { productAppType } from "@/../shared/routerTypes";
 
 const client = hc<productAppType>(
-  process.env.BACKEND || "http://localhost:8000/api/v1/products",
+  (process.env.BACKEND || "http://localhost:8000") + "/api/v1/products",
 );
 
 export async function getProducts(cursor: string | undefined, limit: number) {
