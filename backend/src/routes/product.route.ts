@@ -16,6 +16,11 @@ export const productRoutes = new Hono()
       }),
     ),
     async (c) => {
+      // return c.json({
+      //   products: [],
+      //   nextCursor: null,
+      // });
+
       console.log("hello");
       const cursor = c.req.query("cursor");
       const limit = Math.min(Number(c.req.query("limit") ?? 10), 100);

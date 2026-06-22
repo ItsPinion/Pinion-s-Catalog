@@ -50,52 +50,44 @@ export default function ProductTable() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950">
-        <div className="text-center">
-          <div className="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-slate-700 border-t-violet-500" />
+      <div className="text-center">
+        <div className="mx-auto h-16 w-16 animate-spin rounded-full border-4 border-slate-700 border-t-violet-500" />
 
-          <h2 className="mt-6 text-2xl font-bold text-white">
-            Loading Catalog
-          </h2>
+        <h2 className="mt-6 text-2xl font-bold text-white">Loading Catalog</h2>
 
-          <p className="mt-2 text-slate-400">Fetching products...</p>
-        </div>
+        <p className="mt-2 text-slate-400">Fetching products...</p>
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950">
-        <div className="rounded-3xl border border-red-500/20 bg-red-500/10 p-8 text-center">
-          <h2 className="text-xl font-semibold text-red-400">
-            Failed to load products
-          </h2>
+      <div className="rounded-3xl border border-red-500/20 bg-red-500/10 p-8 text-center">
+        <h2 className="text-xl font-semibold text-red-400">
+          Failed to load products
+        </h2>
 
-          <p className="mt-2 text-slate-300">{(error as Error)?.message}</p>
-        </div>
+        <p className="mt-2 text-slate-300">{(error as Error)?.message}</p>
       </div>
     );
   }
 
   if (products.length === 0) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950">
-        <div className="text-center">
-          <div className="text-7xl">📦</div>
+      <div className="text-center">
+        <div className="text-7xl">📦</div>
 
-          <h2 className="mt-4 text-3xl font-bold text-white">
-            No Products Found
-          </h2>
+        <h2 className="mt-4 text-3xl font-bold text-white">
+          No Products Found
+        </h2>
 
-          <p className="mt-2 text-slate-400">The catalog is currently empty.</p>
-        </div>
+        <p className="mt-2 text-slate-400">The catalog is currently empty.</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white">
+    <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-black text-white">
       <div className="mx-auto max-w-7xl px-6 py-10">
         {/* Hero */}
         <div className="mb-8 rounded-3xl border border-slate-800 bg-slate-900/60 p-8 backdrop-blur">
@@ -220,7 +212,7 @@ export default function ProductTable() {
               disabled={isFetchingNextPage}
               className="
                 rounded-2xl
-                bg-gradient-to-r
+                bg-linear-to-r
                 from-violet-600
                 to-indigo-600
                 px-8
