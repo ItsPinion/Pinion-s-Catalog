@@ -24,7 +24,7 @@ export const getProducts = async (
 
   const products = await productRepo.findMany(limit, cursorId, cursorUpdatedAt);
 
-  const lastProduct = products.at(-1);
+  const lastProduct = products[products.length - 1];
 
   const nextCursor =
     lastProduct &&
@@ -77,7 +77,7 @@ export const getProductsByCategoryId = async (
     cursorUpdatedAt,
   );
 
-  const lastProduct = products.at(-1);
+  const lastProduct = products[products.length - 1];
 
   const nextCursor =
     lastProduct &&
