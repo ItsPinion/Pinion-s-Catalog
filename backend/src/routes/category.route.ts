@@ -7,24 +7,32 @@ import z from "zod";
 export const categoryRoutes = new Hono();
 
 categoryRoutes
-  .get("/", async (c) => {
-    try {
-      const categories = await categoryService.getCategories();
-      return c.json(categories);
-    } catch (error) {
-      return c.json(error, 500);
-    }
-  })
-  .get("/:id", async (c) => {
-    const id = Number(c.req.param("id"));
+  .get(
+    "/",
 
-    try {
-      const category = await categoryService.getCategoriesById(id);
-      return c.json(category);
-    } catch (error) {
-      return c.json(error, 500);
-    }
-  })
+    async (c) => {
+      try {
+        const categories = await categoryService.getCategories();
+        return c.json(categories);
+      } catch (error) {
+        return c.json(error, 500);
+      }
+    },
+  )
+  .get(
+    "/:id",
+    zValidator("param", z.object({ id: z.number().min(1) })),
+    async (c) => {
+      const id = Number(c.req.param("id"));
+
+      try {
+        const category = await categoryService.getCategoriesById(id);
+        return c.json(category);
+      } catch (error) {
+        return c.json(error, 500);
+      }
+    },
+  )
   .post(
     "/",
     zValidator("json", z.object({ name: z.string().min(1) })),
@@ -60,13 +68,17 @@ categoryRoutes
       }
     },
   )
-  .delete("/:id", async (c) => {
-    const id = Number(c.req.param("id"));
+  .delete(
+    "/:id",
+    zValidator("param", z.object({ id: z.number().min(1) })),
+    async (c) => {
+      const id = Number(c.req.param("id"));
 
-    try {
-      await categoryService.deleteCategory(id);
-      return c.json({ success: true }, 200);
-    } catch (error) {
-      return c.json(error, 500);
-    }
-  });
+      try {
+        await categoryService.deleteCategory(id);
+        return c.json({ success: true }, 200);
+      } catch (error) {
+        return c.json(error, 500);
+      }
+    },
+  );

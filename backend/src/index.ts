@@ -32,6 +32,8 @@ app.get("/", (c) => {
   });
 });
 
+export const route = app;
+
 export default {
   port: 8000,
   fetch: app.fetch,

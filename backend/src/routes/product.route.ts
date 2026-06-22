@@ -6,51 +6,87 @@ import * as productService from "../services/product.service";
 import { getCategoriesById } from "../services/category.service";
 
 export const productRoutes = new Hono()
-  .get("/", async (c) => {
-    const cursor = c.req.query("cursor");
-    const limit = Math.min(Number(c.req.query("limit") ?? 10), 100);
+  .get(
+    "/",
+    zValidator(
+      "query",
+      z.object({
+        cursor: z.string().optional(),
+        limit: z.string().min(1).max(100).optional(),
+      }),
+    ),
+    async (c) => {
+      console.log("hello");
+      const cursor = c.req.query("cursor");
+      const limit = Math.min(Number(c.req.query("limit") ?? 10), 100);
 
-    try {
-      console.log(cursor, limit);
-      const products = await productService.getProducts(cursor, limit);
-      return c.json(products);
-    } catch (error) {
-      return c.json(error, 500);
-    }
-  })
-  .get("/:id", async (c) => {
-    const id = Number(c.req.param("id"));
+      try {
+        console.log(cursor, limit);
+        const products = await productService.getProducts(cursor, limit);
+        return c.json(products);
+      } catch (error) {
+        return c.json(error, 500);
+      }
+    },
+  )
+  .get(
+    "/:id",
+    zValidator(
+      "param",
+      z.object({
+        id: z.number().min(1),
+      }),
+    ),
+    async (c) => {
+      const id = Number(c.req.param("id"));
 
-    const product = await productService.getProductById(id);
-    console.log(product);
+      const product = await productService.getProductById(id);
+      console.log(product);
 
-    if (!product) {
-      return c.json({ error: "Product not found at ID:" + id }, 404);
-    }
-
-    return c.json(product);
-  })
-  .get("/category/:id", async (c) => {
-    const categoryId = Number(c.req.param("id"));
-    const cursor = c.req.query("cursor");
-    const limit = Math.min(Number(c.req.query("limit") ?? 10), 100);
-    try {
-      const category = await getCategoriesById(categoryId);
-      console.log(category);
-      if (!category) {
-        return c.json({ error: "Category not found" }, 400);
+      if (!product) {
+        return c.json({ error: "Product not found at ID:" + id }, 404);
       }
 
-      const products = await productService.getProductsByCategoryId(
-        categoryId,
-        cursor,
-        limit,
-      );
-      return c.json(products);
-    } catch (error) {
-      return c.json(error, 500);
-    }
-  })
+      return c.json(product);
+    },
+  )
+  .get(
+    "/category/:id",
+    zValidator(
+      "param",
+      z.object({
+        id: z.number().min(1),
+      }),
+    ),
+    zValidator(
+      "query",
+      z.object({
+        cursor: z.string().optional(),
+        limit: z.number().min(1).max(100).optional(),
+      }),
+    ),
+    async (c) => {
+      const categoryId = Number(c.req.param("id"));
+      const cursor = c.req.query("cursor");
+      const limit = Math.min(Number(c.req.query("limit") ?? 10), 100);
+      try {
+        const category = await getCategoriesById(categoryId);
+        console.log(category);
+        if (!category) {
+          return c.json({ error: "Category not found" }, 400);
+        }
+
+        const products = await productService.getProductsByCategoryId(
+          categoryId,
+          cursor,
+          limit,
+        );
+        return c.json(products);
+      } catch (error) {
+        return c.json(error, 500);
+      }
+    },
+  )
   .post(
     "/",
     zValidator(
