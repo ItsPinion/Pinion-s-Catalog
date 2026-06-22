@@ -1,0 +1,2 @@
+CREATE INDEX "products_feed_idx" ON "products" USING btree ("updated_at","id");--> statement-breakpoint
+CREATE INDEX "products_category_feed_idx" ON "products" USING btree ("category_id","updated_at","id");
